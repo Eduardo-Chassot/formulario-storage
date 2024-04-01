@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Prog 3</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+        .form-wrap{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10%;
+        }
+
+        .form{
+            display: grid;
+        }
+
+        .form-input{
+            margin-top: 0.5%;
+        }
+
+
+        .button {
+            display: flex;
+            padding: 10px 20px; 
+            text-decoration: none;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .button:hover {
+            background-color: #610000;
+        }
+
+        .div-buttons{
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        body{
+            font-family: "Lato", sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+    </style>
+
+    <script>
+            function getInputsIntoArray() {
+                let formulario = document.getElementById("form"),
+                    inputs = formulario.querySelectorAll("input"),
+                    valores = {};
+                
+                inputs.forEach(function(input) {
+                    if (input.type === 'checkbox') {
+                        valores[input.name] = input.checked; // Salva o estado do checkbox
+                    } else {
+                        valores[input.name] = input.value;
+                    }
+                });
+                
+                return valores;
+            };
+
+            function salvarSessionStorage(){
+                let array = getInputsIntoArray();
+                let arrayJson = JSON.stringify(array);
+
+                limparDados();
+                sessionStorage.setItem('formData', JSON.stringify(arrayJson));
+            };
+
+            function salvarLocalStorage(){
+                let array = getInputsIntoArray();
+                let arrayJson = JSON.stringify(array);
+
+                limparDados();
+                localStorage.setItem('formData', JSON.stringify(arrayJson));
+            }
+
+            function salvarCookie(){
+                let array = getInputsIntoArray();
+                let arrayJson = JSON.stringify(array);
+
+                limparDados();
+                document.cookie = "meuArray=" + arrayJson + "; expires=" + new Date(Date.now() + 24 * 60 * 60 * 1000).toUTCString()
+            }
+
+
+            function limparDados(){
+                localStorage.clear();
+                sessionStorage.clear();
+                // Não vou limpar o cookie pq ele sai automático em 24 horas //
+            }
+
+    </script>
+</head>
+<body>
+    <div class="form-wrap">
+        <h2>
+            Preencha o formulário.
+        </h2>
+        <form class="form" id="form">
+            <label>
+                <p>Nome</p>
+                <input type="text" name="nome" class="form-input" placeholder="Digite seu nome">
+            </label>
+            <label>
+                <p>Sobrenome</p>
+                <input type="text" name="sobrenome" class="form-input" placeholder="Digite seu sobrenome">
+            </label>
+            <label>
+                <p>Rua</p>
+                <input type="text" name="rua" class="form-input" placeholder="Digite sua rua">
+            </label>
+            <label>
+                <p>Cidade</p>
+                <input type="text" name="cidade" class="form-input" placeholder="Digite sua cidade">
+            </label>
+            <label>
+                <p>CEP</p>
+                <input type="text" name="cidade" class="form-input" placeholder="Digite seu cep">
+            </label>
+            <label>
+                <p>Estado</p>
+                <input type="text" name="estado" class="form-input" placeholder="Digite seu Estado">
+            </label>
+            <label>
+                <p>Deseja receber Newsletter</p>
+                <input type="checkbox" name="newsletter" class="form-input">
+            </label>
+            <div class="div-buttons">
+                <a href="javascript: salvarSessionStorage();" class="button">Adicionar Em Session Storage</a>
+                <a href="javascript: salvarLocalStorage();" class="button">Adicionar Em Local Storage</a>
+                <a href="javascript: salvarCookie();" class="button">Adicionar Em Cookies</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
